@@ -4,6 +4,9 @@ const express = require('express');
 
 const blogRoutes = require('./routes/blog');
 
+// import db handler file
+const db = require("./data/database");
+
 const app = express();
 
 // Activate EJS view engine
@@ -22,4 +25,7 @@ app.use(function (error, req, res, next) {
   res.status(500).render('500');
 });
 
-app.listen(3000);
+// establish db connection - wrap app.listen only to work if error not thrown
+db.connectToDatabase().then(function(){
+  app.listen(3000);
+});
