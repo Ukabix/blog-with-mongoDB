@@ -95,6 +95,16 @@ router.get(
   if (!post) {
     return res.status(404).render("404");
   }
+  // convert time to human readable object
+  post.humanReadable = post.date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+  
+  // convert date to ISO
+  post.date = post.date.toISOString();
 
   res.render("post-detail", { post: post });
 });
