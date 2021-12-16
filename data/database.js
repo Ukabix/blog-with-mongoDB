@@ -9,7 +9,7 @@ let database;
 
 // use connect method - returns promise so use async func
 async function connect() {
-  const client = await MongoClient.connect("mongodb://127.0.0.1:27017");
+  const client = await MongoClient.connect("mongodb://127.0.0.1:27017"); // localhost throws timeout error???
   // call db
   database = client.db("blog");
 }
