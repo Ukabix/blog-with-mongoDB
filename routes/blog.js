@@ -109,4 +109,44 @@ router.get(
   res.render("post-detail", { post: post });
 });
 
+// get route for updating post
+router.get("/posts/:id/edit", async function(req,res) {
+  // get post id
+  const postId = req.params.id;
+  // query - use projection
+  const post = await db
+    .getDb()
+    .collection("posts")
+    .findOne(
+      { _id: new ObjectId(postId) },
+      { title: 1, summary: 1, body: 1 }
+    );
+      //handle invalid address
+  if (!post) {
+    return res.status(404).render("404");
+  }
+  // render post update template
+  res.render("update-post", { post: post });
+});
+
+// post route for updating post
+router.post("/posts/:id/edit", async function(req, res) {
+  // get post id
+  const postId = new ObjectId (req.params.id);
+  // access db with update - filter with postId
+  const result = await db.getDb().
+  collection("posts").
+  updateOne(
+    {_id: postId}, 
+    {
+      $set: { 
+      title: req.body.title,
+      summary: req.body.summary,
+      body: req.body.content
+      }
+    }
+  );
+  res.redirect("/posts");
+});
+
 module.exports = router;
